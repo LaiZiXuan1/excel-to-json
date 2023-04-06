@@ -1,24 +1,29 @@
-const path = require("path");
-const fs = require("fs");
+import { WorkBook } from "xlsx";
+import { Stats } from "fs";
+import ErrnoException = NodeJS.ErrnoException;
+
+import path from "path";
+import * as fs from "fs";
+
 const XLSX = require("xlsx");
 const filePath = path.resolve("./index");
 const node_xj = require("xls-to-json");
 
 // 收集所有的文件路径
-const arr = [];
-const fileDisplay = (filePath) => {
+const arr: string[] = [];
+const fileDisplay = (filePath: string) => {
   console.log("开始了", filePath);
   //根据文件路径读取文件，返回文件列表
-  fs.readdir(filePath, function (err, files) {
+  fs.readdir(filePath, function (err: ErrnoException, files: string[]) {
     console.log("读取文件了", files);
     if (err) return console.error("Error:(spec)", err);
-    files.forEach((filename) => {
+    files.forEach((filename: string) => {
       //获取当前文件的绝对路径
       const filedir = path.join(filePath, filename);
       console.log("拿到绝对路径了", filedir);
       // fs.stat(path)执行后，会将stats类的实例返回给其回调函数。
-      fs.stat(filedir, (eror, stats) => {
-        if (eror) return console.error("Error:(spec)", err);
+      fs.stat(filedir, (error: ErrnoException | null, stats: Stats) => {
+        if (error) return console.error("Error:(spec)", err);
         // 是否是文件
         const isFile = stats.isFile();
         // 是否是文件夹
@@ -37,22 +42,28 @@ const fileDisplay = (filePath) => {
 };
 fileDisplay(filePath);
 
+interface SheetNamesTypes {
+  name: string;
+  input: string;
+}
+
 const resultData = {};
-function getExcelSheet(arr) {
-  let sheetNames = [];
-  arr.forEach((item) => {
-    const workData = XLSX.readFile(item).SheetNames;
-    workData.forEach((name) => {
+
+function getExcelSheet(arr: string[]) {
+  let sheetNames: SheetNamesTypes[] = [];
+  arr.forEach((item: string) => {
+    const workData: WorkBook = XLSX.readFile(item);
+    workData.SheetNames.forEach((name: string) => {
       sheetNames.push({ name, input: item });
     });
   });
-  sheetNames.forEach((item, index) => {
+  sheetNames.forEach((item: SheetNamesTypes, index) => {
     node_xj(
       {
         input: item.input, // input xls
         sheet: item.name, // specific sheetname
       },
-      function (err, result) {
+      function (err: any, result: any) {
         if (err) {
           console.error("123", err);
         } else {
@@ -72,7 +83,7 @@ function showResult() {
   const file = path.join(__dirname, "data.json");
 
   //写入文件
-  fs.writeFile(file, content, function (err) {
+  fs.writeFile(file, content, function (err: ErrnoException) {
     if (err) {
       return console.log(err);
     }

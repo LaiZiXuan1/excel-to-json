@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es6",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "outDir": "dist",
+    "baseUrl": "."
+  },
+  "include": ["./*.ts"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+    }
+  }
+}
