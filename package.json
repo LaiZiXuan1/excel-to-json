@@ -1,0 +1,20 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "prettier": "^2.8.7",
+    "xls-to-json": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "xlsx": "^0.18.5"
+  }
+}
